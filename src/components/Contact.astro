@@ -1,0 +1,57 @@
+---
+import Section from './Section.astro';
+import { site, topics, platforms } from '../data/site';
+const href = (t: (typeof topics)[number]) =>
+  `mailto:${site.email}?subject=${encodeURIComponent(t.subject)}&body=${encodeURIComponent(t.body)}`;
+const links = [['LinkedIn', site.linkedin], ['GitHub', site.github], ...platforms];
+---
+<Section id="contact" cmd="mail --to abdulrahman" intro="Two quick steps: choose a topic, then send. Your email app opens with a message already started.">
+  <div class="contact" data-contact data-email={site.email}>
+    <div class="card contact__main">
+      <h3 class="step"><span>1</span> What is it about?</h3>
+      <fieldset class="topics">
+        <legend class="sr-only">Choose a topic</legend>
+        {topics.map((t, i) => (
+          <label class="topic">
+            <input type="radio" name="topic" value={t.id} checked={i === 0} data-href={href(t)}>
+            <span><strong>{t.label}</strong><em>{t.hint}</em></span>
+          </label>
+        ))}
+      </fieldset>
+
+      <h3 class="step"><span>2</span> Send it</h3>
+      <p class="addr">{site.email}</p>
+      <div class="cta">
+        <a class="btn btn--fill" id="sendMail" href={href(topics[0])}>Send email</a>
+        <button class="btn btn--solid" id="copyMail" type="button">Copy address</button>
+      </div>
+      <p class="note" id="copyNote" role="status" aria-live="polite"></p>
+    </div>
+
+    <aside class="contact__side">
+      <p class="avail"><span aria-hidden="true"></span>Open to internships and freelance work</p>
+      <p class="loc">Based in {site.location}</p>
+      <h3>Find me elsewhere</h3>
+      <ul class="elsewhere">
+        {links.map(([name, h]) => <li><a class="btn btn--solid btn--sm" href={h} target="_blank" rel="noopener">{name}</a></li>)}
+      </ul>
+    </aside>
+  </div>
+</Section>
+
+<script>
+  const root = document.querySelector('[data-contact]') as HTMLElement | null;
+  if (root) {
+    const send = root.querySelector('#sendMail') as HTMLAnchorElement;
+    const note = root.querySelector('#copyNote') as HTMLElement;
+    root.querySelectorAll<HTMLInputElement>('input[name="topic"]').forEach((r) =>
+      r.addEventListener('change', () => { send.href = r.dataset.href || send.href; })
+    );
+    root.querySelector('#copyMail')?.addEventListener('click', async () => {
+      const email = root.dataset.email || '';
+      try { await navigator.clipboard.writeText(email); note.textContent = 'Address copied.'; }
+      catch { note.textContent = 'Copy failed. Select the address above and copy it manually.'; }
+      setTimeout(() => (note.textContent = ''), 2500);
+    });
+  }
+</script>

@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
+import { site, status, projects, services } from '../data/site';
+---
+<Base>
+  <section class="hero">
+    <div class="hero__text">
+    <p class="prompt"><b>$</b> whoami<span class="caret" aria-hidden="true"></span></p>
+    <h1>{site.name}</h1>
+    <p class="lede">AI engineering student working toward machine learning and data engineering. Today I turn messy datasets into analysis, dashboards and reports people can act on.</p>
+    <div class="cta">
+      <a class="btn btn--fill" href="#work">See my work</a>
+      <a class="btn btn--solid" href="#contact">Hire me</a>
+    </div>
+    <div class="term">
+      <div class="term__bar">~/abdulrahman</div>
+      <pre><span class="p">$</span> cat status.txt
+{status.map(([k, v]) => <Fragment><span class="k">{k.padEnd(9)}</span> {v}{'\n'}</Fragment>)}</pre>
+    </div>
+    </div>
+    <figure class="hero__photo">
+      <img src="/images/profile-640.webp" srcset="/images/profile-320.webp 320w, /images/profile-640.webp 640w" sizes="(min-width: 900px) 22rem, 70vw" width="640" height="800" alt="Portrait of Abdulrahman Waheed" fetchpriority="high" decoding="async">
+    </figure>
+  </section>
+
+  <Section id="work" cmd="ls projects/" intro="Real datasets, real questions. Every project is open on GitHub.">
+    <div class="cards">
+      {projects.map((p) => (
+        <article class="card card--project">
+          {p.href && <a class="theme-btn icon-btn" href={p.href} target="_blank" rel="noopener" aria-label={`${p.title} on GitHub`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.8a10.2 10.2 0 0 0-3.2 19.9c.5.1.7-.2.7-.5v-1.9c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A10.2 10.2 0 0 0 12 1.8"/></svg></a>}
+          <p class="card__meta">{p.repo}</p>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+          <ul class="tags">{p.tags.map((t) => <li>{t}</li>)}</ul>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="services" cmd="cat services.md" intro="End-to-end data analytics for teams and individuals who want decisions, not just charts.">
+    <div class="cards">
+      {services.map(([t, d]) => (
+        <article class="card"><h3>{t}</h3><p>{d}</p></article>
+      ))}
+    </div>
+  </Section>
+
+  <About />
+
+  <Contact />
+</Base>

@@ -1,0 +1,16 @@
+---
+import { site } from '../data/site';
+const links = [['work', '#work'], ['services', '#services'], ['about', '#about'], ['contact', '#contact']];
+---
+<header class="nav">
+  <a class="nav__id" href="#top">{site.handle}</a>
+  <div class="nav__right">
+    <nav aria-label="Main">
+      <ul>{links.map(([l, h]) => <li><a href={h}>{l}</a></li>)}</ul>
+    </nav>
+    <button class="theme-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch colour theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.6M12 18.8v2.6M2.6 12h2.6M18.8 12h2.6M5.3 5.3l1.9 1.9M16.8 16.8l1.9 1.9M18.7 5.3l-1.9 1.9M7.2 16.8l-1.9 1.9"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z"/></svg>
+    </button>
+  </div>
+</header>

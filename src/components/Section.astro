@@ -1,0 +1,8 @@
+---
+const { id, cmd, intro } = Astro.props;
+---
+<section class="sec" id={id} aria-labelledby={`${id}-h`}>
+  <h2 id={`${id}-h`}><span>$</span> {cmd}</h2>
+  {intro && <p class="sec__intro">{intro}</p>}
+  <slot />
+</section>
